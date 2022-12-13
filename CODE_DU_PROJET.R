@@ -7,14 +7,14 @@ required_pkgs <- c("ggmap", "rgdal", "rgeos", "maptools",'tis',
                    "tidyverse", "sf", "sp","leaflet", 'tigris','stargazer',
                    "lubridate","Hmisc", "magrittr", 'rworldmap', 'rugarch')
 
-# Liste de l'ensemble des packages dÃ©jÃ  installÃ©s sur notre R 
+# Liste de l'ensemble des packages dÃƒÂ©jÃƒÂ  installÃƒÂ©s sur notre R 
 installed_pkgs <- installed.packages()
 
-# Liste des packages manquants par rapport Ã  notre liste de packages requis pour le travail
+# Liste des packages manquants par rapport ÃƒÂ  notre liste de packages requis pour le travail
 missing_pkgs <- required_pkgs[!(required_pkgs %in% installed_pkgs[, 1])]
 missing_pkgs # Afficher la liste des packages manquants
 
-# TÃ©lÃ©charger les packages manquants si il y en a
+# TÃƒÂ©lÃƒÂ©charger les packages manquants si il y en a
 if (length(missing_pkgs) == 0 ) {
   message("No missing dependencies. You are good to go!")
 } else {
@@ -41,13 +41,14 @@ library(factoextra)
 
 
 ########################################################################################################################
-###################### PremiÃ¨re Ã©tape finie. Il faut maintenant importer la base de donnÃ©es ############################ 
+###################### PremiÃƒÂ¨re ÃƒÂ©tape finie. Il faut maintenant importer la base de donnÃƒÂ©es ############################ 
 ########################################################################################################################
-
-mydata <- read.csv("C:/Users/Mano/Documents/CTPEA/4e/ML PROJECT/HFP.csv") # Importation de la base de donnÃ©es sur les prix des commoditÃ©s.
+# Importation de la base de donnÃƒÂ©es sur les prix des commoditÃƒÂ©s.
+mydata <- read.csv("C:/Users/Mano/Documents/CTPEA/4e/ML PROJECT/HFP.csv") 
+#The database is in the repository, please download it and modify the previous line according to the path of the database you downloaded.
 #Ch_lieu <- read_csv("Haiti_GPS.csv")
 str(mydata)
-mydata <- mydata[-1,] # On enlÃ¨ve la  premiÃ¨re ligne
+mydata <- mydata[-1,] # On enlÃƒÂ¨ve la  premiÃƒÂ¨re ligne
 mydata <- mydata %>%
   select(c(date, admin1, admin2, latitude,
            longitude, category, commodity,
@@ -58,10 +59,10 @@ mydata <- mydata %>%
 #Ch_lieu <- st_as_sf(Ch_lieu, coords = c("longitude", "latitude"))
 
 
-str(mydata) # Les variables ne sont pas dans la forme souhaitÃ©e, nous devons les transformer. 
+str(mydata) # Les variables ne sont pas dans la forme souhaitÃƒÂ©e, nous devons les transformer. 
 #str(Ch_lieu)
 
-# Transformation des donnÃ©es dans le type qu'il faut
+# Transformation des donnÃƒÂ©es dans le type qu'il faut
 mydata$latitude <- as.double(mydata$latitude)
 mydata$longitude <- as.double(mydata$longitude)
 
@@ -76,7 +77,7 @@ mydata$price <- as.numeric(mydata$price)
 
 glimpse(mydata)
 
-levels(mydata$admin1) # Cette ligne nous dit les diffÃ©rents niveaux qui existent dans la variable de type "Factor" admin1
+levels(mydata$admin1) # Cette ligne nous dit les diffÃƒÂ©rents niveaux qui existent dans la variable de type "Factor" admin1
 
 # Traduire certains mots en Francais
 
@@ -87,12 +88,12 @@ levels(mydata$admin1)[levels(mydata$admin1) == "West"] <- "Ouest"
 levels(mydata$admin1)[levels(mydata$admin1) == "South"] <- "Sud"
 levels(mydata$admin1)[levels(mydata$admin1) == "South-East"] <- "Sud-Est"
 
-levels(mydata$admin1) # On vÃ©rifie que la traduction a Ã©tÃ© faite (Voir rÃ©sultat au niveau de la console)
+levels(mydata$admin1) # On vÃƒÂ©rifie que la traduction a ÃƒÂ©tÃƒÂ© faite (Voir rÃƒÂ©sultat au niveau de la console)
 
-# On se rend compte aussi que le nom des variables n'est pas en franÃ§ais, on va donc les changer:
+# On se rend compte aussi que le nom des variables n'est pas en franÃƒÂ§ais, on va donc les changer:
 # Changer le nom de certaines colonnes
 
-names(mydata)[1] <- 'Date' # On assigne le nom de Date Ã  la premiÃ¨re colonne
+names(mydata)[1] <- 'Date' # On assigne le nom de Date ÃƒÂ  la premiÃƒÂ¨re colonne
 names(mydata)[2] <- 'Departement'
 names(mydata)[3] <- 'Ville'
 names(mydata)[4] <- 'latitude'
@@ -130,7 +131,7 @@ map_market_1
 
 
 
-### Faisons un travail par commoditÃ©
+### Faisons un travail par commoditÃƒÂ©
 
 #### Riz local
 
@@ -158,24 +159,24 @@ sorgho <- mydata %>%
 
 plot(riz_importe %>%
        select(c(Departement, Prix)),
-     main = "Prix du riz importé par département")
+     main = "Prix du riz importÃ© par dÃ©partement")
 
 plot(mais_local %>%
        select(c(Departement, Prix)),
-     main = "Prix du maïs local par département")
+     main = "Prix du maÃ¯s local par dÃ©partement")
 
 plot(mais_importe %>%
        select(c(Departement, Prix)),
-     main = "Prix du maïs importé par département")
+     main = "Prix du maÃ¯s importÃ© par dÃ©partement")
 
 
 plot(farine %>%
        select(c(Departement, Prix)),
-     main = "Prix de la farine par département")
+     main = "Prix de la farine par dÃ©partement")
 
 plot(sorgho %>%
        select(c(Departement, Prix)),
-     main = "Prix du sorgho par département")
+     main = "Prix du sorgho par dÃ©partement")
 
 plot(riz_local %>%
        select(c(Departement, Prix)),
@@ -271,7 +272,7 @@ plot(riz_local %>%
 Legende <- riz_local$Departement
 diri <- qplot(riz_local$Date, riz_local$Prix , colour = Legende)+
   geom_line() +
-  labs(title = paste0("Evolution des prix du riz local vendu par livre de janvier 2015 Ã  avril 2022"),
+  labs(title = paste0("Evolution des prix du riz local vendu par livre de janvier 2015 ÃƒÂ  avril 2022"),
        
        x = 'Date',
        y = 'HTG',
@@ -279,7 +280,7 @@ diri <- qplot(riz_local$Date, riz_local$Prix , colour = Legende)+
   
   theme_bw(base_family = "TT Times New Roman")
 diri
-# Vu que le graphe est trÃ¨s condensÃ©, on va prendre des groupes de Departements
+# Vu que le graphe est trÃƒÂ¨s condensÃƒÂ©, on va prendre des groupes de Departements
 
 # Riz local vendu par le Grand Nord (Artibonite, Nord, Nord-Est et Nord-Ouest)
 riz_local_GN <- mydata %>%
@@ -291,7 +292,7 @@ Grand_Nord <- riz_local_GN$Departement
 
 diri_GN <- qplot(riz_local_GN$Date, riz_local_GN$Prix , colour = Grand_Nord)+
   geom_line() +
-  labs(title = paste0("Evolution des prix du riz local vendu par livre dans 4 Departements du Grand Nord de janvier 2015 Ã  avril 2022"),
+  labs(title = paste0("Evolution des prix du riz local vendu par livre dans 4 Departements du Grand Nord de janvier 2015 ÃƒÂ  avril 2022"),
        
        x = 'Date',
        y = 'HTG',
@@ -310,7 +311,7 @@ COSE <- riz_local_COSE$Departement
 
 diri_COSE <- qplot(riz_local_COSE$Date, riz_local_COSE$Prix , colour = COSE)+
   geom_line() +
-  labs(title = paste0("Evolution des prix du riz local vendu par livre de janvier 2015 Ã  avril 2022"),
+  labs(title = paste0("Evolution des prix du riz local vendu par livre de janvier 2015 ÃƒÂ  avril 2022"),
        
        x = 'Date',
        y = 'HTG',
@@ -340,11 +341,11 @@ ggplot(data = riz_local_GN, # the input data
 #mapview(riz_local_GN, xcol = "longitude", ycol = "latitude", zcol = "Prix" ,crs = 4269, grid = F)
 
 
-#################### Faisons une analyse gÃ©rale ############################################### 
-######################### Faisons la mÃªme demarche mais pour l'ensemble du pays. ###########################
+#################### Faisons une analyse gÃƒÂ©rale ############################################### 
+######################### Faisons la mÃƒÂªme demarche mais pour l'ensemble du pays. ###########################
 
 
-data_wide_Pays <- spread(mydata, commodity, Prix) # transformer la matrice de la forme longue (long) Ã  la forme large (wide)
+data_wide_Pays <- spread(mydata, commodity, Prix) # transformer la matrice de la forme longue (long) ÃƒÂ  la forme large (wide)
 
 data_wide_Pays_Plus <- as.data.frame(na.omit(data_wide_Pays %>%
                                                # subset(unit == "Marmitte") %>%
@@ -398,10 +399,10 @@ data_Pays_cr <- cbind(date_Pays_plus, mais_local_cr, riz_tchako_cr, riz_local_cr
 
 names(data_Pays_cr)[1] <- "Date"
 
-########## Jetons un coup d'oeil sur la volatilitÃ© des prix de certains produits ###############################
+########## Jetons un coup d'oeil sur la volatilitÃƒÂ© des prix de certains produits ###############################
 par(mfrow = c(2,2))
 plot(data_Pays_cr$Date, data_Pays_cr$mais_local_cr, type = "l", 
-     main = "Croissance moyenne du prix du maÃ¯s", 
+     main = "Croissance moyenne du prix du maÃƒÂ¯s", 
      ylab ="HTG",
      xlab = "date")
 
@@ -416,7 +417,7 @@ plot(data_Pays_cr$Date, data_Pays_cr$riz_local_cr, type = "l",
      xlab = "date")
 
 plot(data_Pays_cr$Date, data_Pays_cr$farine_import_cr, type = "l",
-     main = "Croissance moyenne du prix de la farine importÃ©e", 
+     main = "Croissance moyenne du prix de la farine importÃƒÂ©e", 
      ylab ="HTG",
      xlab = "date")
 
@@ -480,7 +481,7 @@ garchFit_farine <- ugarchfit(spec=garchSpec_farine, farine_import_cr)
 garchFit_farine
 plot(garchFit_farine, which = 'all')
 
-# Construisons une base de donnÃ©es avec les volatilitÃ©s des prix de ces 3 produits
+# Construisons une base de donnÃƒÂ©es avec les volatilitÃƒÂ©s des prix de ces 3 produits
 
 vola.mais    <- ts(garchFit_mais@fit$sigma^2)
 vola.riz <- ts(garchFit_riz@fit$sigma^2)
@@ -506,7 +507,7 @@ Food_Artibonite <- mydata %>%
 glimpse(Food_Artibonite)
 
 Food_Artibonite$Prix <- as.numeric(Food_Artibonite$Prix)
-data_wide <- spread(Food_Artibonite, commodity, Prix) # transformer la matrice de la forme longue (long) Ã  la forme large (wide)
+data_wide <- spread(Food_Artibonite, commodity, Prix) # transformer la matrice de la forme longue (long) ÃƒÂ  la forme large (wide)
 
 data_wide_Plus <- as.data.frame(na.omit(data_wide %>%
                                           select(c(Date,`Maize meal (local)`, `Rice (tchako)`, `Wheat flour (imported)`, Ville))))
@@ -542,7 +543,7 @@ commodity_pairs.panel_cr <- pairs.panels(data_cr[c("mais_cr", "riz_cr", "farine_
 
 
 
-########## Jetons un coup d'oeil sur la volatilitÃ© des prix de certains produits ###############################
+########## Jetons un coup d'oeil sur la volatilitÃƒÂ© des prix de certains produits ###############################
 plot(mais_cr, type = "l")
 plot(riz_cr, type = "l")
 plot(farine_cr, type = "l")
@@ -581,7 +582,7 @@ garchFit_farine <- ugarchfit(spec=garchSpec_farine, farine_cr)
 garchFit_farine
 plot(garchFit_farine, which = 'all')
 
-# Construisons une base de donnÃ©es avec les volatilitÃ©s des prix de ces 3 produits
+# Construisons une base de donnÃƒÂ©es avec les volatilitÃƒÂ©s des prix de ces 3 produits
 
 vola.mais    <- ts(garchFit_mais@fit$sigma^2)
 vola.riz <- ts(garchFit_riz@fit$sigma^2)
@@ -596,7 +597,7 @@ ggpairs(vola.Plus)
 
 
 
-########## Jetons un coup d'oeil sur la volatilitÃ© des prix de certains produits ###############################
+########## Jetons un coup d'oeil sur la volatilitÃƒÂ© des prix de certains produits ###############################
 plot(mais_local_cr, type = "l")
 plot(riz_tchako_cr, type = "l")
 plot(riz_local_cr, type = "l")
@@ -650,7 +651,7 @@ garchFit_farine_Pays <- ugarchfit(spec=garchSpec_farine_Pays, farine_import_cr)
 garchFit_farine_Pays
 plot(garchFit_farine_Pays, which = 'all')
 
-# Construisons une base de donnÃ©es avec les volatilitÃ©s des prix de ces 3 produits
+# Construisons une base de donnÃƒÂ©es avec les volatilitÃƒÂ©s des prix de ces 3 produits
 
 vola.mais_Pays    <- ts(garchFit_mais_Pays@fit$sigma^2)
 vola.riz_tchako <- ts(garchFit_riz_tchako@fit$sigma^2)
@@ -664,9 +665,9 @@ pairs(vola.Plus_Pays)
 pairs.panels(vola.Plus_Pays)
 ggpairs(vola.Plus_Pays)
 
-############################### A nalyse sur les donnÃ©es sur une base annuelle #####################################################
+############################### A nalyse sur les donnÃƒÂ©es sur une base annuelle #####################################################
 
-# Calculcons les prix moyens par annÃ©e pour ces produits alimentaires
+# Calculcons les prix moyens par annÃƒÂ©e pour ces produits alimentaires
 data_average_Price_annuel <- data_wide_Pays_Plus %>%
   select(-Unite) %>%
   mutate(date = year(Date)) %>%
@@ -679,24 +680,24 @@ glimpse(data_average_Price_annuel)
 # QUelques graphiques pour l'evoluton des prix moyens annuels
 plot(data_average_Price_annuel$date, data_average_Price_annuel$riz_local, type = "l",
      main = "Prix du riz local",
-     xlab = "AnnÃ©e",
+     xlab = "AnnÃƒÂ©e",
      ylab = "HTG/lb")
 
 plot(data_average_Price_annuel$date, data_average_Price_annuel$riz_tchako, type = "l",
      main = "Prix du riz tchako",
-     xlab = "AnnÃ©e",
+     xlab = "AnnÃƒÂ©e",
      ylab = "HTG/lb")
 
 plot(data_average_Price_annuel$date, data_average_Price_annuel$mais_local, type = "l",
-     main = "Prix du maÃ¯s local",
-     xlab = "AnnÃ©e",
+     main = "Prix du maÃƒÂ¯s local",
+     xlab = "AnnÃƒÂ©e",
      ylab = "HTG/lb")
 
 plot(data_average_Price_annuel$date, data_average_Price_annuel$farine_import, type = "l",
-     main = "Prix de la farine importÃ©e",
-     xlab = "AnnÃ©e",
+     main = "Prix de la farine importÃƒÂ©e",
+     xlab = "AnnÃƒÂ©e",
      ylab = "HTG/lb")
-# Quelque chose s'est passÃ© en 2016. QUoi?????? 
+# Quelque chose s'est passÃƒÂ© en 2016. QUoi?????? 
 
 
 # Calculcons les prix moyens par mois pour ces produits alimentaires
@@ -720,10 +721,10 @@ plot(aggregate(ts(data_wide_Plus$farine_importe), FUN = mean))
 par(mfrow=c(2,2))
 plot(data_average_Price %>%
        select(c(Date, mais_local)), type = "l",
-     main = "Evolution du prix du maïs local au niveau national" )
+     main = "Evolution du prix du maÃ¯s local au niveau national" )
 plot(data_average_Price %>%
        select(c(Date, riz_tchako)), type = "l",
-     main = "Evolution du prix du riz importé au niveau national" )
+     main = "Evolution du prix du riz importÃ© au niveau national" )
 plot(data_average_Price %>%
        select(c(Date, riz_local)), type = "l",
      main = "Evolution du prix du riz local au niveau national" )
@@ -736,7 +737,7 @@ clustering_data <- subset(data_wide_Pays_Plus, data_wide_Pays_Plus$Date>"2008-07
 #les donnees sur Port-au-prince ne sont collectees qu'a partir de cette date
 
 
-############################Préparation des données pour le clustering####################################
+############################PrÃ©paration des donnÃ©es pour le clustering####################################
 clustering_mais_local <- select(clustering_data, c(Date, Unite,mais_local, Ville))
 
 clustering_mais_local_PAP <- clustering_mais_local %>%
@@ -770,7 +771,7 @@ nrow(clustering_mais_local_Jeremie)
 nrow(clustering_mais_local_Hinche)
 nrow(clustering_mais_local_gonaives)
 nrow(clustering_mais_local_PdP)
-##############################Recherche de simultanéité dans les données disponibles########################################
+##############################Recherche de simultanÃ©itÃ© dans les donnÃ©es disponibles########################################
 
 clustering_mais_local_1 <- clustering_mais_local %>% 
   subset(Date == date_retenue_cayes[1])
@@ -822,13 +823,13 @@ clustering_mais_local_Jeremie_1 <- clustering_mais_local_5 %>%
   filter(Ville=="Jeremie")
 clustering_mais_local_Hinche_1 <- clustering_mais_local_5 %>%
   filter(Ville=="Hinche")
-###############################Différence entre les prix########################################
+###############################DiffÃ©rence entre les prix########################################
 clustering_mais_local_cayes_1$mais_local <- clustering_mais_local_cayes_1$mais_local - clustering_mais_local_PAP_1$mais_local
 clustering_mais_local_Jacmel_1$mais_local <- clustering_mais_local_Jacmel_1$mais_local - clustering_mais_local_PAP_1$mais_local
 clustering_mais_local_Jeremie_1$mais_local <- clustering_mais_local_Jeremie_1$mais_local - clustering_mais_local_PAP_1$mais_local
 clustering_mais_local_Hinche_1$mais_local <- clustering_mais_local_Hinche_1$mais_local - clustering_mais_local_PAP_1$mais_local
 
-########################Jeu de données final pour le clustering################
+########################Jeu de donnÃ©es final pour le clustering################
 final_cluster_mais_local <- rbind(clustering_mais_local_Hinche_1,clustering_mais_local_cayes_1,clustering_mais_local_Jeremie_1,clustering_mais_local_Jacmel_1)
 
 
@@ -838,7 +839,7 @@ final_cluster_mais_local <- rbind(clustering_mais_local_Hinche_1,clustering_mais
 
 
 ######################clustering################
-###############Nous utilisons la méthode de clustering hiérarchique agglomérative###########
+###############Nous utilisons la mÃ©thode de clustering hiÃ©rarchique agglomÃ©rative###########
 m <- c('average', 'single', 'complete', 'ward')
 names(m) <-  c('average', 'single', 'complete', 'ward')
 #fonction pour calculer les coefficients
@@ -866,16 +867,16 @@ coul <- brewer.pal(4, 'Set2')
 barplot(prop.table(table(clustered_data[c( 'Ville','cluster')]), margin = 1), 
         beside = T,
         legend.text=T,
-        col = coul,xlab = 'Cluster', ylab = "Proportion", main = "Répartition par Cluster")
+        col = coul,xlab = 'Cluster', ylab = "Proportion", main = "RÃ©partition par Cluster")
 prop.table(table(clustered_data[c( 'Ville','cluster')]), margin = 1)
 
 par(mfrow=c(1,1))
-plot((subset(clustered_data, Ville=="Jeremie"))[,1], (subset(clustered_data, Ville=="Jeremie"))[,3], type='l', xlab='Temps', ylab='Différence de prix', main='Différence du prix du maïs local å Jérémie par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Les Cayes"))[,1], (subset(clustered_data, Ville=="Les Cayes"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix du maïs local aux Cayes par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Jacmel"))[,1], (subset(clustered_data, Ville=="Jacmel"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix du maïs local à Jacmel par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Hinche"))[,1], (subset(clustered_data, Ville=="Hinche"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix du maïs local à Hinche par rapport à celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Jeremie"))[,1], (subset(clustered_data, Ville=="Jeremie"))[,3], type='l', xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du maÃ¯s local Ã¥ JÃ©rÃ©mie par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Les Cayes"))[,1], (subset(clustered_data, Ville=="Les Cayes"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du maÃ¯s local aux Cayes par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Jacmel"))[,1], (subset(clustered_data, Ville=="Jacmel"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du maÃ¯s local Ã  Jacmel par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Hinche"))[,1], (subset(clustered_data, Ville=="Hinche"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du maÃ¯s local Ã  Hinche par rapport Ã  celui de Port-au-Prince')
 
-############################Préparation des données pour le clustering####################################
+############################PrÃ©paration des donnÃ©es pour le clustering####################################
 clustering_riz_tchako <- select(clustering_data, c(Date, Unite,riz_tchako, Ville))
 
 clustering_riz_tchako_PAP <- clustering_riz_tchako %>%
@@ -909,7 +910,7 @@ nrow(clustering_riz_tchako_Jeremie)
 nrow(clustering_riz_tchako_Hinche)
 nrow(clustering_riz_tchako_gonaives)
 nrow(clustering_riz_tchako_PdP)
-##############################Recherche de simultanéité dans les données disponibles########################################
+##############################Recherche de simultanÃ©itÃ© dans les donnÃ©es disponibles########################################
 
 clustering_riz_tchako_1 <- clustering_riz_tchako %>% 
   subset(Date == date_retenue_cayes[1])
@@ -961,13 +962,13 @@ clustering_riz_tchako_Jeremie_1 <- clustering_riz_tchako_5 %>%
   filter(Ville=="Jeremie")
 clustering_riz_tchako_Hinche_1 <- clustering_riz_tchako_5 %>%
   filter(Ville=="Hinche")
-###############################Différence entre les prix########################################
+###############################DiffÃ©rence entre les prix########################################
 clustering_riz_tchako_cayes_1$riz_tchako <- clustering_riz_tchako_cayes_1$riz_tchako - clustering_riz_tchako_PAP_1$riz_tchako
 clustering_riz_tchako_Jacmel_1$riz_tchako <- clustering_riz_tchako_Jacmel_1$riz_tchako - clustering_riz_tchako_PAP_1$riz_tchako
 clustering_riz_tchako_Jeremie_1$riz_tchako <- clustering_riz_tchako_Jeremie_1$riz_tchako - clustering_riz_tchako_PAP_1$riz_tchako
 clustering_riz_tchako_Hinche_1$riz_tchako <- clustering_riz_tchako_Hinche_1$riz_tchako - clustering_riz_tchako_PAP_1$riz_tchako
 
-########################Jeu de données final pour le clustering################
+########################Jeu de donnÃ©es final pour le clustering################
 final_cluster_riz_tchako <- rbind(clustering_riz_tchako_Hinche_1,clustering_riz_tchako_cayes_1,clustering_riz_tchako_Jeremie_1,clustering_riz_tchako_Jacmel_1)
 
 
@@ -977,7 +978,7 @@ final_cluster_riz_tchako <- rbind(clustering_riz_tchako_Hinche_1,clustering_riz_
 
 
 ######################clustering################
-###############Nous utilisons la méthode de clustering hiérarchique agglomérative###########
+###############Nous utilisons la mÃ©thode de clustering hiÃ©rarchique agglomÃ©rative###########
 m <- c('average', 'single', 'complete', 'ward')
 names(m) <-  c('average', 'single', 'complete', 'ward')
 #fonction pour calculer les coefficients
@@ -1005,14 +1006,14 @@ coul <- brewer.pal(4, 'Set2')
 barplot(prop.table(table(clustered_data[c( 'Ville','cluster')]), margin = 1), 
         beside = T,
         legend.text=T,
-        col = coul,xlab = 'Cluster', ylab = "Proportion", main = "Répartition par Cluster")
+        col = coul,xlab = 'Cluster', ylab = "Proportion", main = "RÃ©partition par Cluster")
 prop.table(table(clustered_data[c( 'Ville','cluster')]), margin = 1)
 
 par(mfrow=c(1,1))
-plot((subset(clustered_data, Ville=="Jeremie"))[,1], (subset(clustered_data, Ville=="Jeremie"))[,3], type='l', xlab='Temps', ylab='Différence de prix', main='Différence du prix du riz importé å Jérémie par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Les Cayes"))[,1], (subset(clustered_data, Ville=="Les Cayes"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix du riz importé aux Cayes par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Jacmel"))[,1], (subset(clustered_data, Ville=="Jacmel"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix du riz importé à Jacmel par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Hinche"))[,1], (subset(clustered_data, Ville=="Hinche"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix du riz importé à Hinche par rapport à celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Jeremie"))[,1], (subset(clustered_data, Ville=="Jeremie"))[,3], type='l', xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du riz importÃ© Ã¥ JÃ©rÃ©mie par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Les Cayes"))[,1], (subset(clustered_data, Ville=="Les Cayes"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du riz importÃ© aux Cayes par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Jacmel"))[,1], (subset(clustered_data, Ville=="Jacmel"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du riz importÃ© Ã  Jacmel par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Hinche"))[,1], (subset(clustered_data, Ville=="Hinche"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du riz importÃ© Ã  Hinche par rapport Ã  celui de Port-au-Prince')
 
 clustering_farine_import <- select(clustering_data, c(Date, Unite,farine_import, Ville))
 
@@ -1047,7 +1048,7 @@ nrow(clustering_farine_import_Jeremie)
 nrow(clustering_farine_import_Hinche)
 nrow(clustering_farine_import_gonaives)
 nrow(clustering_farine_import_PdP)
-##############################Recherche de simultanéité dans les données disponibles########################################
+##############################Recherche de simultanÃ©itÃ© dans les donnÃ©es disponibles########################################
 
 clustering_farine_import_1 <- clustering_farine_import %>% 
   subset(Date == date_retenue_cayes[1])
@@ -1099,13 +1100,13 @@ clustering_farine_import_Jeremie_1 <- clustering_farine_import_5 %>%
   filter(Ville=="Jeremie")
 clustering_farine_import_Hinche_1 <- clustering_farine_import_5 %>%
   filter(Ville=="Hinche")
-###############################Différence entre les prix########################################
+###############################DiffÃ©rence entre les prix########################################
 clustering_farine_import_cayes_1$farine_import <- clustering_farine_import_cayes_1$farine_import - clustering_farine_import_PAP_1$farine_import
 clustering_farine_import_Jacmel_1$farine_import <- clustering_farine_import_Jacmel_1$farine_import - clustering_farine_import_PAP_1$farine_import
 clustering_farine_import_Jeremie_1$farine_import <- clustering_farine_import_Jeremie_1$farine_import - clustering_farine_import_PAP_1$farine_import
 clustering_farine_import_Hinche_1$farine_import <- clustering_farine_import_Hinche_1$farine_import - clustering_farine_import_PAP_1$farine_import
 
-########################Jeu de données final pour le clustering################
+########################Jeu de donnÃ©es final pour le clustering################
 final_cluster_farine_import <- rbind(clustering_farine_import_Hinche_1,clustering_farine_import_cayes_1,clustering_farine_import_Jeremie_1,clustering_farine_import_Jacmel_1)
 
 
@@ -1115,7 +1116,7 @@ final_cluster_farine_import <- rbind(clustering_farine_import_Hinche_1,clusterin
 
 
 ######################clustering################
-###############Nous utilisons la méthode de clustering hiérarchique agglomérative###########
+###############Nous utilisons la mÃ©thode de clustering hiÃ©rarchique agglomÃ©rative###########
 m <- c('average', 'single', 'complete', 'ward')
 names(m) <-  c('average', 'single', 'complete', 'ward')
 #fonction pour calculer les coefficients
@@ -1143,16 +1144,16 @@ coul <- brewer.pal(4, 'Set2')
 barplot(prop.table(table(clustered_data[c( 'Ville','cluster')]), margin = 1), 
         beside = T,
         legend.text=T,
-        col = coul,xlab = 'Cluster', ylab = "Proportion", main = "Répartition par Cluster")
+        col = coul,xlab = 'Cluster', ylab = "Proportion", main = "RÃ©partition par Cluster")
 prop.table(table(clustered_data[c( 'Ville','cluster')]), margin = 1)
 
 par(mfrow=c(1,1))
-plot((subset(clustered_data, Ville=="Jeremie"))[,1], (subset(clustered_data, Ville=="Jeremie"))[,3], type='l', xlab='Temps', ylab='Différence de prix', main='Différence du prix de la farine å Jérémie par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Les Cayes"))[,1], (subset(clustered_data, Ville=="Les Cayes"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix de la farine aux Cayes par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Jacmel"))[,1], (subset(clustered_data, Ville=="Jacmel"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix de la farine à Jacmel par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Hinche"))[,1], (subset(clustered_data, Ville=="Hinche"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix de la farine à Hinche par rapport à celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Jeremie"))[,1], (subset(clustered_data, Ville=="Jeremie"))[,3], type='l', xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix de la farine Ã¥ JÃ©rÃ©mie par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Les Cayes"))[,1], (subset(clustered_data, Ville=="Les Cayes"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix de la farine aux Cayes par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Jacmel"))[,1], (subset(clustered_data, Ville=="Jacmel"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix de la farine Ã  Jacmel par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Hinche"))[,1], (subset(clustered_data, Ville=="Hinche"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix de la farine Ã  Hinche par rapport Ã  celui de Port-au-Prince')
 
-############################Préparation des données pour le clustering####################################
+############################PrÃ©paration des donnÃ©es pour le clustering####################################
 clustering_riz_local <- select(clustering_data, c(Date, Unite,riz_local, Ville))
 
 clustering_riz_local_PAP <- clustering_riz_local %>%
@@ -1187,7 +1188,7 @@ nrow(clustering_riz_local_Jeremie)
 nrow(clustering_riz_local_Hinche)
 nrow(clustering_riz_local_gonaives)
 nrow(clustering_riz_local_PdP)
-##############################Recherche de simultanéité dans les données disponibles########################################
+##############################Recherche de simultanÃ©itÃ© dans les donnÃ©es disponibles########################################
 clustering_riz_local_0 <- clustering_riz_local %>% 
   subset(Date == date_retenue_gonaives[1])
 for (i in 2:50){
@@ -1247,17 +1248,17 @@ clustering_riz_local_Hinche_1 <- clustering_riz_local_5 %>%
   filter(Ville=="Hinche")
 clustering_riz_local_gonaives_1 <- clustering_riz_local_5 %>%
   filter(Ville=="Gonaives")
-###############################Différence entre les prix########################################
+###############################DiffÃ©rence entre les prix########################################
 clustering_riz_local_cayes_1$riz_local <- clustering_riz_local_cayes_1$riz_local - clustering_riz_local_PAP_1$riz_local
 clustering_riz_local_Jacmel_1$riz_local <- clustering_riz_local_Jacmel_1$riz_local - clustering_riz_local_PAP_1$riz_local
 clustering_riz_local_Jeremie_1$riz_local <- clustering_riz_local_Jeremie_1$riz_local - clustering_riz_local_PAP_1$riz_local
 clustering_riz_local_Hinche_1$riz_local <- clustering_riz_local_Hinche_1$riz_local - clustering_riz_local_PAP_1$riz_local
 clustering_riz_local_gonaives_1$riz_local <- clustering_riz_local_gonaives_1$riz_local - clustering_riz_local_PAP_1$riz_local
-########################Jeu de données final pour le clustering################
+########################Jeu de donnÃ©es final pour le clustering################
 final_cluster_riz_local <- rbind(clustering_riz_local_Hinche_1,clustering_riz_local_cayes_1,clustering_riz_local_Jeremie_1,clustering_riz_local_Jacmel_1, clustering_riz_local_gonaives_1)
 
 ######################clustering################
-###############Nous utilisons la méthode de clustering hiérarchique agglomérative###########
+###############Nous utilisons la mÃ©thode de clustering hiÃ©rarchique agglomÃ©rative###########
 m <- c('average', 'single', 'complete', 'ward')
 names(m) <-  c('average', 'single', 'complete', 'ward')
 #fonction pour calculer les coefficients
@@ -1285,17 +1286,17 @@ coul <- brewer.pal(5, 'Set2')
 barplot(prop.table(table(clustered_data[c( 'Ville','cluster')]), margin = 1), 
         beside = T,
         legend.text=T,
-        col = coul,xlab = 'Cluster', ylab = "Proportion", main = "Répartition par Cluster")
+        col = coul,xlab = 'Cluster', ylab = "Proportion", main = "RÃ©partition par Cluster")
 prop.table(table(clustered_data[c( 'Ville','cluster')]), margin = 1)
 
 par(mfrow=c(1,1))
-plot((subset(clustered_data, Ville=="Jeremie"))[,1], (subset(clustered_data, Ville=="Jeremie"))[,3], type='l', xlab='Temps', ylab='Différence de prix', main='Différence du prix du riz local å Jérémie par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Les Cayes"))[,1], (subset(clustered_data, Ville=="Les Cayes"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix du riz local aux Cayes par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Jacmel"))[,1], (subset(clustered_data, Ville=="Jacmel"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix du riz local à Jacmel par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Hinche"))[,1], (subset(clustered_data, Ville=="Hinche"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix du riz local à Hinche par rapport à celui de Port-au-Prince')
-plot((subset(clustered_data, Ville=="Gonaives"))[,1], (subset(clustered_data, Ville=="Gonaives"))[,3], type='l',xlab='Temps', ylab='Différence de prix', main='Différence du prix du riz local à Hinche par rapport à celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Jeremie"))[,1], (subset(clustered_data, Ville=="Jeremie"))[,3], type='l', xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du riz local Ã¥ JÃ©rÃ©mie par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Les Cayes"))[,1], (subset(clustered_data, Ville=="Les Cayes"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du riz local aux Cayes par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Jacmel"))[,1], (subset(clustered_data, Ville=="Jacmel"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du riz local Ã  Jacmel par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Hinche"))[,1], (subset(clustered_data, Ville=="Hinche"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du riz local Ã  Hinche par rapport Ã  celui de Port-au-Prince')
+plot((subset(clustered_data, Ville=="Gonaives"))[,1], (subset(clustered_data, Ville=="Gonaives"))[,3], type='l',xlab='Temps', ylab='DiffÃ©rence de prix', main='DiffÃ©rence du prix du riz local Ã  Hinche par rapport Ã  celui de Port-au-Prince')
 
-###################transformation des données en série temporelle####################
+###################transformation des donnÃ©es en sÃ©rie temporelle####################
 ts_farine <- ts(data_average_Price[6], start = c(2005, 1), end = c(2020, 10), frequency = 12)
 ts_farine
 #acf(ts_farine)
@@ -1383,27 +1384,27 @@ a6[,c("RMSE", "MAE", "MAPE", "MASE")]
 
 
 autoplot(ts_farine) +
-  autolayer(fitted(fit_arima), series = "Valeur \n estimée \n par la \n méthode \n ARIMA") +
+  autolayer(fitted(fit_arima), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n ARIMA") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_farine) +
-  autolayer(fitted(fit_ets), series = "Valeur \n estimée \n par la \n méthode \n ETS") +
+  autolayer(fitted(fit_ets), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n ETS") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_farine) +
-  autolayer(fitted(fit_naive), series = "Valeur \n estimée \n par la \n méthode \n naïve") +
+  autolayer(fitted(fit_naive), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n naÃ¯ve") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_farine) +
-  autolayer(fitted(fit_ses), series = "Valeur \n estimée \n par la \n méthode \n SES") +
+  autolayer(fitted(fit_ses), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n SES") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_farine) +
-  autolayer(fitted(fit_holt), series = "Valeur \n estimée \n par la \n méthode \n HOLT") +
+  autolayer(fitted(fit_holt), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n HOLT") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_farine) +
-  autolayer(fitted(fit_tbats), series = "Valeur \n estimée \n par la \n méthode \n TBATS") +
+  autolayer(fitted(fit_tbats), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n TBATS") +
   ylab('HTG') + xlab("Temps")
 
 
@@ -1447,7 +1448,7 @@ fcst6 <- data.frame(forecast(fit_tbats, h=5))
 rownames(fcst6) <- fcst_date
 fcst6
 
-###################transformation des données en série temporelle####################
+###################transformation des donnÃ©es en sÃ©rie temporelle####################
 ts_mais_local <- ts(data_average_Price[3], start = c(2005, 1), end = c(2020, 10), frequency = 12)
 ts_mais_local
 #acf(ts_mais_local)
@@ -1535,27 +1536,27 @@ a6[,c("RMSE", "MAE", "MAPE", "MASE")]
 
 
 autoplot(ts_mais_local) +
-  autolayer(fitted(fit_arima), series = "Valeur \n estimée \n par la \n méthode \n ARIMA") +
+  autolayer(fitted(fit_arima), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n ARIMA") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_mais_local) +
-  autolayer(fitted(fit_ets), series = "Valeur \n estimée \n par la \n méthode \n ETS") +
+  autolayer(fitted(fit_ets), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n ETS") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_mais_local) +
-  autolayer(fitted(fit_naive), series = "Valeur \n estimée \n par la \n méthode \n naïve") +
+  autolayer(fitted(fit_naive), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n naÃ¯ve") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_mais_local) +
-  autolayer(fitted(fit_ses), series = "Valeur \n estimée \n par la \n méthode \n SES") +
+  autolayer(fitted(fit_ses), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n SES") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_mais_local) +
-  autolayer(fitted(fit_holt), series = "Valeur \n estimée \n par la \n méthode \n HOLT") +
+  autolayer(fitted(fit_holt), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n HOLT") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_mais_local) +
-  autolayer(fitted(fit_tbats), series = "Valeur \n estimée \n par la \n méthode \n TBATS") +
+  autolayer(fitted(fit_tbats), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n TBATS") +
   ylab('HTG') + xlab("Temps")
 
 
@@ -1599,7 +1600,7 @@ fcst6 <- data.frame(forecast(fit_tbats, h=5))
 rownames(fcst6) <- fcst_date
 fcst6
 
-###################transformation des données en série temporelle####################
+###################transformation des donnÃ©es en sÃ©rie temporelle####################
 ts_riz_local <- ts(data_average_Price[3], start = c(2005, 1), end = c(2020, 10), frequency = 12)
 ts_riz_local
 #acf(ts_riz_local)
@@ -1687,27 +1688,27 @@ a6[,c("RMSE", "MAE", "MAPE", "MASE")]
 
 
 autoplot(ts_riz_local) +
-  autolayer(fitted(fit_arima), series = "Valeur \n estimée \n par la \n méthode \n ARIMA") +
+  autolayer(fitted(fit_arima), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n ARIMA") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_riz_local) +
-  autolayer(fitted(fit_ets), series = "Valeur \n estimée \n par la \n méthode \n ETS") +
+  autolayer(fitted(fit_ets), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n ETS") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_riz_local) +
-  autolayer(fitted(fit_naive), series = "Valeur \n estimée \n par la \n méthode \n naïve") +
+  autolayer(fitted(fit_naive), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n naÃ¯ve") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_riz_local) +
-  autolayer(fitted(fit_ses), series = "Valeur \n estimée \n par la \n méthode \n SES") +
+  autolayer(fitted(fit_ses), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n SES") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_riz_local) +
-  autolayer(fitted(fit_holt), series = "Valeur \n estimée \n par la \n méthode \n HOLT") +
+  autolayer(fitted(fit_holt), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n HOLT") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_riz_local) +
-  autolayer(fitted(fit_tbats), series = "Valeur \n estimée \n par la \n méthode \n TBATS") +
+  autolayer(fitted(fit_tbats), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n TBATS") +
   ylab('HTG') + xlab("Temps")
 
 
@@ -1751,7 +1752,7 @@ fcst6 <- data.frame(forecast(fit_tbats, h=5))
 rownames(fcst6) <- fcst_date
 fcst6
 
-###################transformation des données en série temporelle####################
+###################transformation des donnÃ©es en sÃ©rie temporelle####################
 ts_riz_tchako <- ts(data_average_Price[3], start = c(2005, 1), end = c(2020, 10), frequency = 12)
 ts_riz_tchako
 #acf(ts_riz_tchako)
@@ -1839,27 +1840,27 @@ a6[,c("RMSE", "MAE", "MAPE", "MASE")]
 
 
 autoplot(ts_riz_tchako) +
-  autolayer(fitted(fit_arima), series = "Valeur \n estimée \n par la \n méthode \n ARIMA") +
+  autolayer(fitted(fit_arima), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n ARIMA") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_riz_tchako) +
-  autolayer(fitted(fit_ets), series = "Valeur \n estimée \n par la \n méthode \n ETS") +
+  autolayer(fitted(fit_ets), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n ETS") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_riz_tchako) +
-  autolayer(fitted(fit_naive), series = "Valeur \n estimée \n par la \n méthode \n naïve") +
+  autolayer(fitted(fit_naive), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n naÃ¯ve") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_riz_tchako) +
-  autolayer(fitted(fit_ses), series = "Valeur \n estimée \n par la \n méthode \n SES") +
+  autolayer(fitted(fit_ses), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n SES") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_riz_tchako) +
-  autolayer(fitted(fit_holt), series = "Valeur \n estimée \n par la \n méthode \n HOLT") +
+  autolayer(fitted(fit_holt), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n HOLT") +
   ylab('HTG') + xlab("Temps")
 
 autoplot(ts_riz_tchako) +
-  autolayer(fitted(fit_tbats), series = "Valeur \n estimée \n par la \n méthode \n TBATS") +
+  autolayer(fitted(fit_tbats), series = "Valeur \n estimÃ©e \n par la \n mÃ©thode \n TBATS") +
   ylab('HTG') + xlab("Temps")
 
 
